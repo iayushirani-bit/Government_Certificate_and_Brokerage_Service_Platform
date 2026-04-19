@@ -1,0 +1,64 @@
+import { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import API from "../utils/api";
+
+export default function AdminDashboard() {
+  const [agents, setAgents] = useState([]);
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: agentData } = await API.get("/admin/agents");
+        const { data: serviceData } = await API.get("/admin/services");
+        setAgents(agentData);
+        setServices(serviceData);
+      } catch (err) {
+        console.error("Error fetching admin data", err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const verifyAgent = async (id) => {
+    try {
+      await API.put(`/admin/agents/${id}/verify`);
+      alert("Agent verified!");
+    } catch (err) {
+      alert("Error verifying agent");
+    }
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <div className="p-10">
+        <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
+
+        <h3 className="text-xl font-semibold mt-6 mb-2">Agents</h3>
+        {agents.map((agent) => (
+          <div key={agent.id} className="border p-4 mb-4 rounded shadow">
+            <p>Name: {agent.name}</p>
+            <p>Status: {agent.verified ? "Verified" : "Pending"}</p>
+            {!agent.verified && (
+              <button
+                onClick={() => verifyAgent(agent.id)}
+                className="bg-blue-600 text-white px-3 py-1"
+              >
+                Verify Agent
+              </button>
+            )}
+          </div>
+        ))}
+
+        <h3 className="text-xl font-semibold mt-6 mb-2">Services</h3>
+        {services.map((service) => (
+          <div key={service.id} className="border p-4 mb-4 rounded shadow">
+            <p>{service.name}</p>
+            <p>Charge: {service.charge}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
