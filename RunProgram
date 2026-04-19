@@ -1,0 +1,4 @@
+npx create-next-app gov-cert-platform
+cd gov-cert-platform
+npm install axios tailwindcss
+npm run dev
