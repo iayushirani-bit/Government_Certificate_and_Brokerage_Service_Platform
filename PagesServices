@@ -1,0 +1,21 @@
+import Navbar from "../components/Navbar";
+import ServiceCard from "../components/ServiceCard";
+
+const services = [
+  { name: "Birth Certificate", docs: ["ID Proof"], charge: "₹200" },
+  { name: "Income Certificate", docs: ["Salary Slip"], charge: "₹300" },
+  { name: "Caste Certificate", docs: ["Community Proof"], charge: "₹250" },
+];
+
+export default function Services() {
+  return (
+    <div>
+      <Navbar />
+      <div className="p-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {services.map((s, i) => (
+          <ServiceCard key={i} service={s} />
+        ))}
+      </div>
+    </div>
+  );
+}
