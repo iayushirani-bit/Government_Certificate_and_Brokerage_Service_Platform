@@ -1,0 +1,57 @@
+import { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import API from "../utils/api";
+
+export default function AgentDashboard() {
+  const [requests, setRequests] = useState([]);
+
+  useEffect(() => {
+    // fetch assigned requests
+    const fetchRequests = async () => {
+      try {
+        const { data } = await API.get("/agent/requests");
+        setRequests(data);
+      } catch (err) {
+        console.error("Error fetching requests", err);
+      }
+    };
+    fetchRequests();
+  }, []);
+
+  const handleUpdate = async (id, status) => {
+    try {
+      await API.put(`/agent/requests/${id}`, { status });
+      alert("Status updated!");
+    } catch (err) {
+      alert("Error updating status");
+    }
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <div className="p-10">
+        <h2 className="text-2xl font-bold mb-4">Agent Dashboard</h2>
+        {requests.map((req) => (
+          <div key={req.id} className="border p-4 mb-4 rounded shadow">
+            <h3 className="font-bold">{req.serviceName}</h3>
+            <p>User: {req.userName}</p>
+            <p>Status: {req.status}</p>
+            <button
+              onClick={() => handleUpdate(req.id, "In Progress")}
+              className="bg-yellow-500 text-white px-3 py-1 mr-2"
+            >
+              Mark In Progress
+            </button>
+            <button
+              onClick={() => handleUpdate(req.id, "Completed")}
+              className="bg-green-600 text-white px-3 py-1"
+            >
+              Mark Completed
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
