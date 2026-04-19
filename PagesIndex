@@ -1,0 +1,15 @@
+import Navbar from "../components/Navbar";
+
+export default function Home() {
+  return (
+    <div>
+      <Navbar />
+      <section className="p-10 text-center">
+        <h2 className="text-3xl font-bold">Welcome to GovCert</h2>
+        <p className="mt-4 text-gray-700">
+          Simplifying access to government certificates with verified agents.
+        </p>
+      </section>
+    </div>
+  );
+}
