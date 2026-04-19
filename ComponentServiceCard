@@ -1,0 +1,12 @@
+export default function ServiceCard({ service }) {
+  return (
+    <div className="border p-4 rounded shadow">
+      <h3 className="font-bold">{service.name}</h3>
+      <p>Required Docs: {service.docs.join(", ")}</p>
+      <p>Charge: {service.charge}</p>
+      <button className="bg-green-600 text-white px-3 py-1 mt-2">
+        Request Service
+      </button>
+    </div>
+  );
+}
